@@ -10,6 +10,16 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
+String dropvalue = 'select';
+
+  var district = [
+    'malappuram',
+    'kozhikode',
+    'trissur',
+    'kollam',
+    'kotayam'
+  ];
   var name = TextEditingController();
   var email = TextEditingController();
   var num = TextEditingController();
@@ -159,6 +169,36 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20,top: 20),
+                  child: Text('District :',style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                    ),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10,top: 20),
+                  child: DropdownButton(
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    value: dropvalue,
+                    items: district.map((String district) {
+                      return DropdownMenuItem(
+                        value: district,
+                        child: Text(district,style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                        ),));
+                    }).toList(),
+                     onChanged: (String? newValue){
+                      setState(() {
+                        dropvalue = newValue!;
+                      });
+                     }),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
