@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:register_form/details.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -11,7 +12,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-String dropvalue = 'select';
+String? dropdownvalue = 'malappuram';
 
   var district = [
     'malappuram',
@@ -20,6 +21,7 @@ String dropvalue = 'select';
     'kollam',
     'kotayam'
   ];
+  List l = [];
   var name = TextEditingController();
   var email = TextEditingController();
   var num = TextEditingController();
@@ -181,22 +183,24 @@ String dropvalue = 'select';
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10,top: 20),
-                  child: DropdownButton(
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    value: dropvalue,
-                    items: district.map((String district) {
-                      return DropdownMenuItem(
-                        value: district,
-                        child: Text(district,style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        ),));
-                    }).toList(),
-                     onChanged: (String? newValue){
-                      setState(() {
-                        dropvalue = newValue!;
-                      });
-                     }),
+                  child: SizedBox(
+                    height: 50,
+                    width: 200,
+                    child: DropdownButton(
+                      value: dropdownvalue,
+                      icon: Icon(Icons.keyboard_arrow_down),
+                      items: district.map((String district) {
+                        return DropdownMenuItem(
+                          value: district,
+                          child: Text(district));
+                      }).toList(),
+                      
+                      onChanged: (String? newValue){
+                        setState(() {
+                          dropdownvalue = newValue;
+                        });
+                      }),
+                  ),
                 )
               ],
             ),
@@ -207,10 +211,18 @@ String dropvalue = 'select';
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        print(name.text);
-                        print(email.text);
-                        print(num.text);
-                        print(gender);
+                        l.add({
+                          'name' : name.text,
+                          'email': email.text,
+                          'number' : num.text,
+                          'gender' : gender,
+                          'district' : dropdownvalue
+                        });
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => Person(
+                              users : l
+                            ),));
                       },
                       child: Text('Submit')),
                   ElevatedButton(
@@ -218,7 +230,10 @@ String dropvalue = 'select';
                         name.clear();
                         email.clear();
                         num.clear();
-                        
+                        setState(() {
+                          gender="";
+                          dropdownvalue = 'malappuram';
+                        });                        
                       },
                       child: Text('cancel'))
                 ],
